@@ -29,7 +29,7 @@
 .reveal p{line-height:1.42;margin:.3em 0}
 .reveal section{text-align:left}
 .reveal .slides section{padding:0 44px;box-sizing:border-box;height:100%}
-.reveal .slides section.contenido{display:flex!important;flex-direction:column;padding-top:34px;padding-bottom:58px}
+.reveal .slides section.contenido{display:flex!important;flex-direction:column;padding-top:34px;padding-bottom:64px}
 .reveal .slides section.contenido>.cuerpo{flex:1;display:flex;flex-direction:column;min-height:0}
 .reveal .slides section.contenido>.cuerpo.centrado{justify-content:center}
 /* kicker: sección numerada arriba de cada título, como señal de navegación */
@@ -178,12 +178,31 @@ section.present .etiqueta-barra{opacity:1}
 .salida b.negativo{color:#F0A08C}.salida b.positivo{color:#8FDCCB}
 /* referencias */
 .ref{font-size:.5em;line-height:1.42;margin:.3em 0;padding-left:1.3em;text-indent:-1.3em}
-/* pie fijo */
-.pie{position:fixed;left:20px;bottom:14px;z-index:30;display:flex;gap:12px;align-items:center;font:.5em var(--titulo);color:var(--gris)}
-.pie a{color:#fff;background:var(--teal);text-decoration:none;font-weight:600;padding:6px 14px;border-radius:999px;letter-spacing:.04em}
+/* barra de navegación propia: fija, fuera del lienzo, en píxeles reales */
+.navdeck{position:fixed;left:0;right:0;bottom:0;height:56px;z-index:30;display:flex;align-items:center;justify-content:space-between;
+  padding:0 18px 5px;box-sizing:border-box;font-family:var(--titulo);pointer-events:none}
+.navdeck>*{pointer-events:auto}
+.navdeck .rutas{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.navdeck a,.navdeck button{font:600 14px var(--titulo);letter-spacing:.02em;text-decoration:none;cursor:pointer;border-radius:999px;
+  padding:8px 15px;border:1px solid var(--linea);background:rgba(255,255,255,.92);color:var(--navy);transition:background .15s,color .15s}
+.navdeck a:hover,.navdeck button:hover{border-color:var(--teal)}
+.navdeck a.menu-btn{background:var(--teal);border-color:var(--teal);color:#fff}
+.navdeck a.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.navdeck a .n{color:var(--teal-claro);margin-right:5px;font-weight:700}
+.navdeck a.on .n{color:var(--salvia)}
+.navdeck .flechas{display:flex;gap:6px;align-items:center}
+.navdeck .flechas button{width:38px;height:38px;padding:0;display:grid;place-items:center;font-size:18px;line-height:1}
+.navdeck .flechas button:disabled{opacity:.35;cursor:default}
+.navdeck .contador{font:600 13px var(--titulo);color:var(--gris);min-width:58px;text-align:center;letter-spacing:.04em}
+.navdeck .ayuda{font:12px var(--cuerpo);color:var(--gris);margin-left:6px}
 .reveal .progress{color:var(--teal);height:5px}
-.reveal .slide-number{font-family:var(--titulo);background:transparent;color:var(--gris);font-size:.48em}
-.reveal .controls{color:var(--teal)}
+html.vertical .navdeck{height:auto;padding:6px 10px 8px;flex-wrap:wrap;gap:6px;background:linear-gradient(transparent,rgba(238,244,243,.95) 30%)}
+html.vertical .navdeck a,html.vertical .navdeck button{font-size:12px;padding:6px 9px}
+html.vertical .navdeck .rutas{gap:5px}
+html.vertical .navdeck .flechas button{width:32px;height:32px;font-size:16px}
+html.vertical .navdeck .contador{font-size:12px;min-width:44px}
+html.vertical .navdeck .ayuda{display:none}
+html.vertical .reveal .slides section.contenido{padding-bottom:110px}
 /* zoom a pantalla completa */
 .zoom{position:fixed;inset:0;background:rgba(11,39,51,.95);display:none;align-items:center;justify-content:center;z-index:60;padding:20px;cursor:zoom-out}
 .zoom.on{display:flex}
@@ -212,7 +231,7 @@ html.vertical .reveal table{font-size:.55em}
 html.vertical .reveal .slides section.contenido>.cuerpo{overflow:visible;justify-content:flex-start}
 html.vertical .capturas-dos{margin-top:.6em}
 html.vertical .tiempo{font-size:.66em}
-@media print{.pie{display:none}.zoom{display:none!important}
+@media print{.navdeck{display:none}.zoom{display:none!important}
   .barra{transform:scaleY(1)!important;transition:none!important}
   .etiqueta-barra{opacity:1!important;transition:none!important}}
 </style>
@@ -319,7 +338,7 @@ html.vertical .tiempo{font-size:.66em}
 </section>
 
 <!-- ═══ 4. EL PROBLEMA · problema central ═══ -->
-<section class="contenido" id="problema" data-background-color="#EEF4F3">
+<section class="contenido" id="problema" data-seccion="problema" data-background-color="#EEF4F3">
   <div class="kicker"><span class="n">01</span> El problema</div>
   <h2>El problema central</h2>
   <div class="cuerpo">
@@ -337,7 +356,7 @@ html.vertical .tiempo{font-size:.66em}
 </section>
 
 <!-- ═══ 5. EL PROBLEMA · seis cadenas ═══ -->
-<section class="contenido" data-background-color="#EEF4F3">
+<section class="contenido" data-seccion="problema" data-background-color="#EEF4F3">
   <div class="kicker"><span class="n">01</span> El problema</div>
   <h2>Seis cadenas, de la causa a la consecuencia</h2>
   <div class="cuerpo centrado">
@@ -414,7 +433,7 @@ html.vertical .tiempo{font-size:.66em}
 </section>
 
 <!-- ═══ 6. EL PROBLEMA · lo que septiembre comprobó ═══ -->
-<section class="contenido" data-background-color="#EEF4F3">
+<section class="contenido" data-seccion="problema" data-background-color="#EEF4F3">
   <div class="kicker"><span class="n">01</span> El problema</div>
   <h2>Lo que septiembre comprobó</h2>
   <div class="cuerpo centrado">
@@ -443,7 +462,7 @@ html.vertical .tiempo{font-size:.66em}
 </section>
 
 <!-- ═══ 7. LA PROPUESTA · qué hace el sistema ═══ -->
-<section class="contenido" id="propuesta" data-background-color="#EEF4F3">
+<section class="contenido" id="propuesta" data-seccion="propuesta" data-background-color="#EEF4F3">
   <div class="kicker"><span class="n">02</span> La propuesta</div>
   <h2>La información deja de vivir en un teléfono</h2>
   <div class="cuerpo">
@@ -490,7 +509,7 @@ html.vertical .tiempo{font-size:.66em}
 </section>
 
 <!-- ═══ 8. LA PROPUESTA · qué resuelve cada parte ═══ -->
-<section class="contenido" data-background-color="#EEF4F3">
+<section class="contenido" data-seccion="propuesta" data-background-color="#EEF4F3">
   <div class="kicker"><span class="n">02</span> La propuesta</div>
   <h2>Qué resuelve cada parte</h2>
   <div class="cuerpo centrado">
@@ -520,7 +539,7 @@ html.vertical .tiempo{font-size:.66em}
 </section>
 
 <!-- ═══ 9. LA PROPUESTA · de dónde parte ═══ -->
-<section class="contenido" data-background-color="#EEF4F3">
+<section class="contenido" data-seccion="propuesta" data-background-color="#EEF4F3">
   <div class="kicker"><span class="n">02</span> La propuesta</div>
   <h2>De dónde parte</h2>
   <div class="cuerpo centrado">
@@ -534,7 +553,7 @@ html.vertical .tiempo{font-size:.66em}
 </section>
 
 <!-- ═══ 10. EL ROI · qué mide ═══ -->
-<section class="contenido" id="roi" data-background-color="#EEF4F3">
+<section class="contenido" id="roi" data-seccion="roi" data-background-color="#EEF4F3">
   <div class="kicker"><span class="n">03</span> El ROI</div>
   <h2>Qué mide el ROI</h2>
   <div class="cuerpo centrado">
@@ -549,7 +568,7 @@ html.vertical .tiempo{font-size:.66em}
 </section>
 
 <!-- ═══ 11. EL ROI · los números ═══ -->
-<section class="contenido" data-background-color="#EEF4F3">
+<section class="contenido" data-seccion="roi" data-background-color="#EEF4F3">
   <div class="kicker"><span class="n">03</span> El ROI</div>
   <h2>Los números, con su origen</h2>
   <div class="cuerpo centrado">
@@ -599,7 +618,7 @@ html.vertical .tiempo{font-size:.66em}
 </section>
 
 <!-- ═══ 12. EL ROI · el resultado ═══ -->
-<section class="contenido" data-background-color="#EEF4F3">
+<section class="contenido" data-seccion="roi" data-background-color="#EEF4F3">
   <div class="kicker"><span class="n">03</span> El ROI</div>
   <h2>El resultado, en dos escalas</h2>
   <div class="cuerpo">
@@ -640,7 +659,7 @@ html.vertical .tiempo{font-size:.66em}
 </section>
 
 <!-- ═══ 13. EL ROI · calculadora ═══ -->
-<section class="contenido" data-background-color="#EEF4F3">
+<section class="contenido" data-seccion="roi" data-background-color="#EEF4F3">
   <div class="kicker"><span class="n">03</span> El ROI</div>
   <h2>Cámbiale los números</h2>
   <div class="cuerpo centrado">
@@ -715,7 +734,20 @@ html.vertical .tiempo{font-size:.66em}
 </div></div>
 
 <div class="zoom" id="zoom"><img id="zoom-img" src="" alt="Vista ampliada"></div>
-<div class="pie"><a href="#/menu">Menú</a><span>← → para moverte · Esc para ver todo</span></div>
+<nav class="navdeck" aria-label="Navegación de la presentación">
+  <div class="rutas">
+    <a class="menu-btn" href="#/menu">Menú</a>
+    <a href="#/problema" data-ruta="problema"><span class="n">01</span>El problema</a>
+    <a href="#/propuesta" data-ruta="propuesta"><span class="n">02</span>La propuesta</a>
+    <a href="#/roi" data-ruta="roi"><span class="n">03</span>El ROI</a>
+    <span class="ayuda">← → para moverte · Esc para ver todo</span>
+  </div>
+  <div class="flechas">
+    <button type="button" id="ant" aria-label="Anterior">‹</button>
+    <span class="contador" id="contador">1 / 15</span>
+    <button type="button" id="sig" aria-label="Siguiente">›</button>
+  </div>
+</nav>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.js"></script>
 <script>
@@ -723,10 +755,22 @@ html.vertical .tiempo{font-size:.66em}
 const vertical=window.innerWidth<700&&window.innerHeight>window.innerWidth;
 document.documentElement.classList.toggle('vertical',vertical);
 Reveal.initialize({
-  hash:true, slideNumber:'c/t', progress:true, controls:true, controlsTutorial:false,
+  hash:true, slideNumber:false, progress:true, controls:false, controlsTutorial:false,
   transition:'fade', width:vertical?720:1280, height:vertical?1280:720, margin:0.03, center:false, touch:true, fragments:true,
   scrollActivationWidth:0, // reveal 5 cambia a vista de scroll bajo 435 px; aquí manda el modo vertical propio
 });
+// barra propia: flechas, contador y sección activa
+(function(){
+  const ant=document.getElementById('ant'), sig=document.getElementById('sig'), cont=document.getElementById('contador');
+  ant.addEventListener('click',()=>Reveal.prev()); sig.addEventListener('click',()=>Reveal.next());
+  function pinta(){
+    const i=Reveal.getIndices().h, n=Reveal.getTotalSlides();
+    cont.textContent=(i+1)+' / '+n; ant.disabled=(i===0); sig.disabled=!Reveal.isLastSlide()?false:!Reveal.availableFragments().next;
+    const sec=Reveal.getCurrentSlide().dataset.seccion||'';
+    document.querySelectorAll('.navdeck a[data-ruta]').forEach(a=>a.classList.toggle('on',a.dataset.ruta===sec));
+  }
+  Reveal.on('ready',pinta); Reveal.on('slidechanged',pinta); Reveal.on('fragmentshown',pinta); Reveal.on('fragmenthidden',pinta);
+})();
 // pestañas
 document.querySelectorAll('[data-tabs]').forEach(tabs=>{
   tabs.addEventListener('click',e=>{
