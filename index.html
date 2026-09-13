@@ -1,0 +1,775 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Endopolis · Cómo hacer una presentación del proyecto · IH712</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+/* ── Identidad Endopolis: paleta tomada del logotipo (torres de vidrio azul petróleo, azul, verde teal, salvia) ── */
+:root{
+  --navy:#12384A; --navy-900:#0B2733; --navy-800:#0F3242;
+  --azul:#2E6E8F; --azul-claro:#5C9BB8;
+  --teal:#3F8F88; --teal-claro:#7FB8AE; --salvia:#B9D6CB; --salvia-claro:#DDEBE5;
+  --hielo:#EEF4F3; --blanco:#FFFFFF;
+  --tinta:#1A3340; --gris:#5F7480; --linea:#D6E2E0;
+  --coral:#C0654E; --coral-suave:#F7E9E4; --verde:#2F8F7A; --verde-suave:#E4F1EC;
+  --titulo:"Montserrat","Segoe UI",system-ui,sans-serif;
+  --cuerpo:"Source Sans 3","Segoe UI",system-ui,-apple-system,sans-serif;
+  --mono:ui-monospace,Menlo,"SF Mono",Consolas,monospace;
+}
+.reveal{font-family:var(--cuerpo);font-size:27px;color:var(--tinta)}
+.reveal h1,.reveal h2,.reveal h3{font-family:var(--titulo);text-transform:none;letter-spacing:-.005em;color:var(--navy);margin:0 0 .45em}
+.reveal h1{font-size:1.75em;font-weight:600;line-height:1.15}
+.reveal h2{font-size:1.32em;font-weight:600;line-height:1.2}
+.reveal h3{font-size:.95em;font-weight:600}
+.reveal p{line-height:1.42;margin:.3em 0}
+.reveal section{text-align:left}
+.reveal .slides section{padding:0 44px;box-sizing:border-box;height:100%}
+.reveal .slides section.contenido{display:flex!important;flex-direction:column;padding-top:34px;padding-bottom:58px}
+.reveal .slides section.contenido>.cuerpo{flex:1;display:flex;flex-direction:column;min-height:0}
+.reveal .slides section.contenido>.cuerpo.centrado{justify-content:center}
+/* kicker: sección numerada arriba de cada título, como señal de navegación */
+.kicker{font:600 .5em var(--titulo);letter-spacing:.2em;text-transform:uppercase;color:var(--teal);margin-bottom:.9em;display:flex;align-items:center;gap:12px}
+.kicker::after{content:"";height:1px;flex:1;background:linear-gradient(90deg,var(--salvia),transparent)}
+.kicker .n{color:var(--azul)}
+/* fondo oscuro: portada y conclusión, con el motivo de torres del logo */
+.reveal .oscuro{color:#E6F0EE}
+.reveal .oscuro h1,.reveal .oscuro h2{color:#fff}
+.reveal .oscuro p{color:#D7E5E1}
+.torres{position:absolute;right:0;bottom:0;height:100%;width:52%;pointer-events:none;opacity:.55}
+/* portada */
+.portada{text-align:center!important;display:flex!important;flex-direction:column;justify-content:center;align-items:center}
+.portada img.logo{height:250px;width:auto;margin:-10px 0 4px;mix-blend-mode:multiply}
+.portada .marca{font:600 .58em var(--titulo);letter-spacing:.32em;text-transform:uppercase;color:var(--teal);margin-bottom:.8em}
+.portada h1{font-size:1.5em;margin-bottom:.5em;max-width:20em;color:var(--navy)}
+.portada .datos{font-size:.64em;line-height:1.7;color:var(--tinta)}
+.portada .datos b{display:block;color:var(--navy);font-weight:600;font-family:var(--titulo);font-size:1.05em;margin-bottom:.15em}
+.portada .sello{margin-top:.9em;width:120px;height:3px;background:linear-gradient(90deg,var(--azul),var(--teal))}
+.portada .torres{opacity:.9}
+/* menú de tarjetas */
+.menu{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin:auto 0;min-height:330px}
+.tarjeta{position:relative;background:var(--blanco);border:1px solid var(--linea);border-radius:14px;padding:26px 24px 22px;
+  text-decoration:none;color:inherit;display:flex;flex-direction:column;overflow:hidden;
+  box-shadow:0 2px 10px rgba(18,56,74,.05);transition:transform .18s,box-shadow .18s}
+.tarjeta::before{content:"";position:absolute;left:0;top:0;right:0;height:6px;background:linear-gradient(90deg,var(--azul),var(--teal))}
+.tarjeta:hover{transform:translateY(-4px);box-shadow:0 14px 30px rgba(18,56,74,.14)}
+.tarjeta .num{font:600 .5em var(--titulo);letter-spacing:.2em;color:var(--teal)}
+.tarjeta svg.icono{width:72px;height:72px;margin:16px 0 14px}
+.tarjeta h3{margin:0 0 .35em;font-size:1em}
+.tarjeta p{font-size:.68em;color:var(--gris);margin:0;line-height:1.4}
+.tarjeta .ir{margin-top:auto;padding-top:14px;font:600 .55em var(--titulo);color:var(--azul);letter-spacing:.06em}
+/* pestañas */
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin:.2em 0 .7em}
+.tabs button{font:600 .56em var(--titulo);letter-spacing:.02em;padding:9px 18px;border-radius:999px;border:1px solid var(--linea);
+  background:var(--blanco);color:var(--navy);cursor:pointer;transition:background .15s,color .15s}
+.tabs button:hover{border-color:var(--teal-claro)}
+.tabs button.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.panel{display:none;font-size:.8em}.panel.on{display:block}
+/* layout de dos columnas */
+.dos{display:grid;grid-template-columns:7fr 3fr;gap:30px;align-items:start}
+.destacado{background:var(--blanco);border:1px solid var(--linea);border-radius:14px;padding:20px 22px;font-size:.66em;line-height:1.35;
+  position:relative;overflow:hidden}
+.destacado::after{content:"";position:absolute;right:-30px;top:-30px;width:110px;height:110px;border-radius:50%;background:var(--salvia-claro);opacity:.7}
+.destacado .n{font:700 2.6em var(--titulo);color:var(--azul);display:block;line-height:1;margin-bottom:.12em;position:relative;z-index:1}
+.destacado>*{position:relative;z-index:1}
+/* línea de tiempo del incidente */
+.tiempo{display:flex;flex-direction:column;gap:10px;font-size:.62em}
+.dia{display:grid;grid-template-columns:64px 1fr;gap:12px;align-items:center;background:var(--blanco);border:1px solid var(--linea);border-radius:10px;padding:8px 12px}
+.dia .f{font:700 1.05em var(--titulo);color:var(--navy);text-align:center;line-height:1.05}
+.dia .f small{display:block;font:600 .62em var(--titulo);letter-spacing:.14em;color:var(--teal);text-transform:uppercase}
+.dia.caido{border-left:5px solid var(--coral)}
+.dia.origen{border-left:5px solid var(--azul)}
+.dia p{margin:0;line-height:1.3}
+/* cita del problema central */
+.tronco{background:var(--blanco);border-left:6px solid var(--azul);border-radius:0 12px 12px 0;padding:18px 22px;font-size:.86em;line-height:1.42;
+  box-shadow:0 2px 12px rgba(18,56,74,.06)}
+.tronco b{display:block;font:600 .55em var(--titulo);letter-spacing:.18em;text-transform:uppercase;color:var(--teal);margin-bottom:.6em}
+/* cadena causa > efecto > consecuencia */
+.cadena-v{display:grid;grid-template-columns:3fr 2fr;gap:34px;align-items:center;margin-top:.2em}
+.pasos{display:flex;flex-direction:column;gap:2px}
+.flecha-arriba{align-self:center;color:var(--teal-claro);height:26px}
+.flecha-arriba svg{width:24px;height:24px}
+.nota-cadena{background:var(--blanco);border:1px solid var(--linea);border-radius:14px;padding:22px 24px;font-size:.7em;line-height:1.4}
+.nota-cadena .n{font:700 2.4em var(--titulo);color:var(--azul);display:block;line-height:1}
+.nota-cadena .n small{font-size:.45em;color:var(--teal);font-weight:600}
+.nota-cadena b{display:block;font:600 1.05em var(--titulo);color:var(--navy);margin:.4em 0 .3em}
+.nota-cadena p{margin:0;color:var(--gris)}
+.caja{border-radius:12px;padding:15px 20px;font-size:.8em;position:relative;border:1px solid transparent}
+.caja b{display:block;font:600 .62em var(--titulo);letter-spacing:.16em;text-transform:uppercase;margin-bottom:8px}
+.caja p{margin:0;line-height:1.38}
+.causa{background:var(--verde-suave);border-color:#CDE4DA}.causa b{color:var(--verde)}
+.efecto{background:#E6EFF5;border-color:#CBDCE7}.efecto b{color:var(--azul)}
+.consecuencia{background:var(--coral-suave);border-color:#EBD2C9}.consecuencia b{color:var(--coral)}
+.flecha{display:flex;align-items:center;justify-content:center;color:var(--teal-claro)}
+.flecha svg{width:22px;height:22px}
+.leyenda-arbol{display:flex;gap:22px;font-size:.52em;color:var(--gris);margin-top:1.1em}
+.leyenda-arbol span::before{content:"";display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.leyenda-arbol .l1::before{background:var(--verde)}.leyenda-arbol .l2::before{background:var(--azul)}.leyenda-arbol .l3::before{background:var(--coral)}
+/* tarjetas de evidencia (septiembre) */
+.evidencia{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:.6em;align-items:start}
+.ev{background:var(--blanco);border:1px solid var(--linea);border-radius:14px;padding:20px 22px;font-size:.7em;line-height:1.42;display:flex;flex-direction:column}
+.ev svg{width:48px;height:48px;margin-bottom:12px}
+.ev b{font:600 .95em var(--titulo);color:var(--navy);display:block;margin-bottom:6px}
+.ev p{margin:0}
+/* propuesta */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:34px;align-items:center;flex:1}
+.split svg.diagrama{width:100%;height:auto}
+.parte{display:grid;grid-template-columns:130px 1fr;gap:34px;align-items:center;background:var(--blanco);border:1px solid var(--linea);border-radius:16px;padding:38px 40px;font-size:1.14em;line-height:1.45;min-height:250px;box-sizing:border-box}
+.parte svg{width:120px;height:120px}
+.chip{display:inline-block;font:600 .55em var(--titulo);letter-spacing:.06em;padding:5px 12px;border-radius:999px;background:var(--salvia-claro);color:var(--navy);margin-top:.7em}
+.chip.dato{background:var(--verde-suave);color:var(--verde)}
+.chip.supuesto{background:#EEF1F4;color:var(--gris)}
+/* capturas */
+.capturas-dos{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:start;margin-top:.4em}
+.figura{position:relative}
+.figura .tag{position:absolute;left:12px;top:12px;font:600 .5em var(--titulo);letter-spacing:.1em;text-transform:uppercase;background:rgba(18,56,74,.88);color:#fff;padding:5px 10px;border-radius:6px}
+.captura{border:1px solid var(--linea);border-radius:10px;box-shadow:0 6px 22px rgba(18,56,74,.12);max-width:100%;display:block;cursor:zoom-in}
+.fuente{font-size:.52em;color:var(--gris);margin-top:.7em;line-height:1.4}
+/* fórmula del ROI */
+.formula{display:flex;align-items:center;justify-content:center;gap:18px;margin:1.1em 0;font-size:1.12em;font-family:var(--titulo);font-weight:600;color:var(--navy)}
+.formula .t{background:var(--blanco);border:1px solid var(--linea);border-radius:12px;padding:12px 20px;font-size:.78em}
+.formula .frac{display:flex;flex-direction:column;align-items:center;gap:8px}
+.formula .frac .arriba{display:flex;gap:10px;align-items:center}
+.formula .frac .raya{width:100%;height:2px;background:var(--teal)}
+.formula .op{font-size:1.1em;color:var(--teal)}
+.formula .t.g{border-color:var(--teal-claro);background:var(--verde-suave)}
+.formula .t.i{border-color:#CBDCE7;background:#E6EFF5}
+.formula .res{font-size:1.15em;color:var(--azul)}
+/* tabla ligera */
+.reveal table{font-size:.6em;border-collapse:collapse;width:100%;background:var(--blanco);border-radius:12px;overflow:hidden;box-shadow:0 2px 10px rgba(18,56,74,.05)}
+.reveal th{background:var(--navy);color:#fff;font:600 .9em var(--titulo);letter-spacing:.04em;text-align:left;padding:9px 14px}
+.reveal td{padding:8px 14px;border-bottom:1px solid var(--linea);vertical-align:top;line-height:1.35}
+.reveal tbody tr:last-child td{border-bottom:none}
+.reveal .final-linea{margin-top:.6em;font:600 .68em var(--titulo);color:var(--navy);background:var(--salvia-claro);display:inline-block;padding:8px 16px;border-radius:999px}
+.reveal td .chip{margin:0 0 4px;font-size:.78em}
+/* gráfica del ROI */
+.roi-grid{display:grid;grid-template-columns:58fr 42fr;gap:26px;align-items:start;flex:1}
+.grafica svg{width:100%;max-height:400px}
+.barra{transform-box:fill-box;transform-origin:bottom;transform:scaleY(0);transition:transform .7s cubic-bezier(.2,.7,.3,1)}
+section.present .barra{transform:scaleY(1)}
+.etiqueta-barra{opacity:0;transition:opacity .4s .5s}
+section.present .etiqueta-barra{opacity:1}
+.cifra-roi{background:var(--blanco);border:1px solid var(--linea);border-radius:14px;padding:14px 18px;margin-bottom:14px;position:relative;overflow:hidden}
+.cifra-roi::before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px}
+.cifra-roi .valor{font:700 1.5em var(--titulo);display:block;line-height:1.05;letter-spacing:-.02em}
+.cifra-roi p{font-size:.56em;color:var(--tinta);margin:.4em 0 0;line-height:1.35}
+.cifra-roi.negativa::before{background:var(--coral)}.cifra-roi.negativa .valor{color:var(--coral)}
+.cifra-roi.positiva::before{background:var(--verde)}.cifra-roi.positiva .valor{color:var(--verde)}
+.nota-roi{font-size:.72em;background:var(--blanco);border:1px solid var(--linea);border-radius:12px;padding:12px 16px;margin-top:.5em;line-height:1.38}
+/* calculadora */
+.calc{display:grid;grid-template-columns:46fr 54fr;gap:28px;align-items:start;flex:1}
+.controles{display:flex;flex-direction:column;gap:10px}
+.controles label{display:block;font:600 .6em var(--titulo);color:var(--navy);margin:.2em 0 .25em}
+.controles output{color:var(--azul)}
+.controles input[type=range]{width:100%;accent-color:var(--teal);margin:0 0 6px}
+.controles fieldset{border:1px solid var(--linea);border-radius:12px;padding:8px 14px 10px;margin:0;background:var(--blanco)}
+.controles legend{font:600 .56em var(--titulo);color:var(--navy);padding:0 8px}
+.controles label.radio{display:inline-flex;align-items:center;gap:6px;font:400 .64em var(--cuerpo);color:var(--tinta);margin:2px 14px 2px 0;cursor:pointer}
+.controles input[type=radio]{accent-color:var(--teal);width:16px;height:16px}
+.salida{background:var(--navy);color:#E6F0EE;border-radius:16px;padding:22px 26px;font-size:.7em;position:relative;overflow:hidden}
+.salida::after{content:"";position:absolute;right:-40px;bottom:-40px;width:180px;height:180px;border-radius:50%;background:rgba(127,184,174,.14)}
+.salida p{border-bottom:1px solid rgba(255,255,255,.12);padding:.5em 0;margin:0;position:relative;z-index:1}
+.salida p:last-child{border-bottom:none}
+.salida b{font:700 1.35em var(--titulo);display:block;margin-top:2px;letter-spacing:-.01em}
+.salida b.negativo{color:#F0A08C}.salida b.positivo{color:#8FDCCB}
+/* referencias */
+.ref{font-size:.5em;line-height:1.42;margin:.3em 0;padding-left:1.3em;text-indent:-1.3em}
+/* pie fijo */
+.pie{position:fixed;left:20px;bottom:14px;z-index:30;display:flex;gap:12px;align-items:center;font:.5em var(--titulo);color:var(--gris)}
+.pie a{color:#fff;background:var(--teal);text-decoration:none;font-weight:600;padding:6px 14px;border-radius:999px;letter-spacing:.04em}
+.reveal .progress{color:var(--teal);height:5px}
+.reveal .slide-number{font-family:var(--titulo);background:transparent;color:var(--gris);font-size:.48em}
+.reveal .controls{color:var(--teal)}
+/* zoom a pantalla completa */
+.zoom{position:fixed;inset:0;background:rgba(11,39,51,.95);display:none;align-items:center;justify-content:center;z-index:60;padding:20px;cursor:zoom-out}
+.zoom.on{display:flex}
+.zoom img{max-width:100%;max-height:100%;border-radius:6px;box-shadow:0 14px 50px rgba(0,0,0,.5)}
+.logo-pie{position:absolute;right:44px;bottom:40px;height:64px;opacity:.85}
+/* modo vertical: teléfono en vertical, lienzo 720x1280 y una sola columna */
+html.vertical .reveal{font-size:30px}
+html.vertical .reveal .slides section{padding:0 34px}
+html.vertical .reveal .slides section.contenido{padding-top:30px;padding-bottom:70px}
+html.vertical .reveal h2{font-size:1.25em}
+html.vertical .dos,html.vertical .split,html.vertical .menu,html.vertical .evidencia,html.vertical .cadena-v,
+html.vertical .roi-grid,html.vertical .calc,html.vertical .capturas-dos{grid-template-columns:1fr!important;gap:18px}
+html.vertical .menu{min-height:0;margin:.4em 0}
+html.vertical .tarjeta{padding:20px 22px}
+html.vertical .tarjeta svg.icono{width:52px;height:52px;margin:8px 0}
+html.vertical .tarjeta .ir{padding-top:8px}
+html.vertical .nota-cadena{display:none}
+html.vertical .parte{grid-template-columns:90px 1fr;gap:18px;padding:24px;min-height:0}
+html.vertical .parte svg{width:90px;height:90px}
+html.vertical .grafica svg{max-height:none}
+html.vertical .formula{flex-wrap:wrap;font-size:.95em}
+html.vertical .portada img.logo{height:200px}
+html.vertical .portada h1{font-size:1.35em}
+html.vertical .torres{width:100%;opacity:.5}
+html.vertical .reveal table{font-size:.55em}
+html.vertical .reveal .slides section.contenido>.cuerpo{overflow:visible;justify-content:flex-start}
+html.vertical .capturas-dos{margin-top:.6em}
+html.vertical .tiempo{font-size:.66em}
+@media print{.pie{display:none}.zoom{display:none!important}
+  .barra{transform:scaleY(1)!important;transition:none!important}
+  .etiqueta-barra{opacity:1!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<!-- ═══ 1. PORTADA ═══ -->
+<section class="portada clara" data-background-gradient="radial-gradient(ellipse at 50% 28%,#FFFFFF 0%,#FFFFFF 30%,#EEF4F3 68%,#DDEBE5 100%)">
+  <svg class="torres" viewBox="0 0 640 720" preserveAspectRatio="xMaxYMax slice" aria-hidden="true">
+    <defs>
+      <linearGradient id="t1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2E6E8F" stop-opacity=".38"/><stop offset="1" stop-color="#2E6E8F" stop-opacity="0"/></linearGradient>
+      <linearGradient id="t2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3F8F88" stop-opacity=".34"/><stop offset="1" stop-color="#3F8F88" stop-opacity="0"/></linearGradient>
+      <linearGradient id="t3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7FB8AE" stop-opacity=".3"/><stop offset="1" stop-color="#7FB8AE" stop-opacity="0"/></linearGradient>
+      <linearGradient id="d1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5C9BB8" stop-opacity=".55"/><stop offset="1" stop-color="#12384A" stop-opacity="0"/></linearGradient>
+      <linearGradient id="d2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7FB8AE" stop-opacity=".5"/><stop offset="1" stop-color="#12384A" stop-opacity="0"/></linearGradient>
+      <linearGradient id="d3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#B9D6CB" stop-opacity=".35"/><stop offset="1" stop-color="#12384A" stop-opacity="0"/></linearGradient>
+    </defs>
+    <polygon points="90,720 90,420 150,380 150,720" fill="url(#t2)"/>
+    <polygon points="170,720 170,300 240,250 240,720" fill="url(#t1)"/>
+    <polygon points="260,720 260,190 330,130 330,720" fill="url(#t3)"/>
+    <polygon points="350,720 350,120 420,80 420,720" fill="url(#t1)"/>
+    <polygon points="440,720 440,220 510,170 510,720" fill="url(#t2)"/>
+    <polygon points="530,720 530,330 600,290 600,720" fill="url(#t3)"/>
+  </svg>
+  <img class="logo" src="assets/logo-endopolis.png" alt="Endopolis, endoscopia y nutrición">
+  <div class="marca">Clínica Endopolis · sistema de citas</div>
+  <h1>Cómo hacer una presentación del proyecto</h1>
+  <div class="datos">
+    <b>Hiram Agustín Acevedo López</b>
+    Licenciatura en Desarrollo de Sistemas Web<br>
+    COMUNICACIÓN Y GESTIÓN PROFESIONAL<br>
+    SAEMI NUÑEZ QUIRARTE<br>
+    Unidad 1 Actividad Integradora 1<br>
+    12 de septiembre de 2026
+  </div>
+  <div class="sello"></div>
+</section>
+
+<!-- ═══ 2. ARRANQUE ═══ -->
+<section class="contenido" id="arranque" data-background-color="#EEF4F3">
+  <div class="kicker">El hecho</div>
+  <h2>9 de septiembre de 2026: el teléfono de la clínica dejó de cargar</h2>
+  <div class="cuerpo">
+  <div class="dos" style="grid-template-columns:6fr 4fr;align-items:stretch">
+    <div>
+      <p>En la Clínica de Gastroenterología y Nutrición Endopolis las citas se agendaban desde un teléfono Android viejo, de gama baja, elegido porque era barato y bastaba para llamadas y WhatsApp. El miércoles 9 de septiembre falló el puerto de carga. El teléfono enciende, pero ya no carga: quedó fuera de servicio, y con él la agenda.</p>
+      <p class="fragment">El chip pasó a otro teléfono para atender urgencias por llamada. Eso recuperó la línea, no la agenda ni el historial de conversaciones. El problema nunca fue el número telefónico: fue dónde vivía la información.</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div class="destacado"><span class="n">3</span>días hábiles con la agenda fuera de servicio.</div>
+      <div class="tiempo">
+        <div class="dia origen"><div class="f"><small>mié</small>9</div><p>Falla el puerto de carga del teléfono con el que se agenda.</p></div>
+        <div class="dia caido"><div class="f"><small>jue</small>10</div><p>Sin agenda ni WhatsApp de la clínica.</p></div>
+        <div class="dia caido"><div class="f"><small>vie</small>11</div><p>El chip pasa a otro teléfono: vuelve la línea, no la agenda.</p></div>
+        <div class="dia caido"><div class="f"><small>sáb</small>12</div><p>Tercer día sin agenda. Puede haber consulta en sábado.</p></div>
+      </div>
+    </div>
+  </div>
+  <p class="fuente" style="margin-top:auto">Cada diapositiva lleva una sola idea; el detalle se abre al clic (Nediger, 2018). Se navega con las flechas o tocando los bordes. Con Esc se ve el mapa completo.</p>
+  </div>
+</section>
+
+<!-- ═══ 3. MENÚ ═══ -->
+<section class="contenido" id="menu" data-background-color="#EEF4F3">
+  <div class="kicker">Recorrido</div>
+  <h2>Elige por dónde empezar</h2>
+  <div class="cuerpo">
+  <div class="menu">
+    <a class="tarjeta" href="#/problema">
+      <span class="num">01</span>
+      <svg class="icono" viewBox="0 0 64 64" aria-hidden="true" fill="none" stroke="#3F8F88" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M32 58V34"/><path d="M32 34c-9 0-16-7-16-15 0-4 2-8 5-10 1-6 6-9 11-9s10 3 11 9c3 2 5 6 5 10 0 8-7 15-16 15z" fill="#E4F1EC"/>
+        <path d="M32 58c-4-2-8-2-12-1M32 58c4-2 8-2 12-1" stroke="#2E6E8F"/><path d="M32 46l-5-5M32 42l5-5"/>
+      </svg>
+      <h3>El problema</h3>
+      <p>Lo que el árbol predijo en agosto y septiembre comprobó.</p>
+      <span class="ir">Ir a la sección →</span>
+    </a>
+    <a class="tarjeta" href="#/propuesta">
+      <span class="num">02</span>
+      <svg class="icono" viewBox="0 0 64 64" aria-hidden="true" fill="none" stroke="#2E6E8F" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="6" y="12" width="40" height="28" rx="4" fill="#E6EFF5"/><path d="M6 20h40"/><circle cx="12" cy="16" r="1.4" fill="#2E6E8F"/><circle cx="17" cy="16" r="1.4" fill="#2E6E8F"/>
+        <rect x="44" y="28" width="14" height="26" rx="3" fill="#E4F1EC" stroke="#3F8F88"/><path d="M49 50h4" stroke="#3F8F88"/>
+        <path d="M14 28h18M14 34h12"/>
+      </svg>
+      <h3>La propuesta</h3>
+      <p>Un sistema en el navegador, con la información en una base de datos y no en un teléfono.</p>
+      <span class="ir">Ir a la sección →</span>
+    </a>
+    <a class="tarjeta" href="#/roi">
+      <span class="num">03</span>
+      <svg class="icono" viewBox="0 0 64 64" aria-hidden="true" fill="none" stroke="#12384A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M10 54h46"/><rect x="14" y="36" width="9" height="18" rx="2" fill="#F7E9E4" stroke="#C0654E"/><rect x="28" y="26" width="9" height="28" rx="2" fill="#E4F1EC" stroke="#2F8F7A"/><rect x="42" y="14" width="9" height="40" rx="2" fill="#E6EFF5" stroke="#2E6E8F"/>
+        <path d="M12 22l14-8 12 6 16-12" stroke="#3F8F88"/><path d="M48 8h6v6" stroke="#3F8F88"/>
+      </svg>
+      <h3>El ROI</h3>
+      <p>Cuánto se pierde sin el proyecto, cuánto cuesta hacerlo y en cuánto tiempo se recupera.</p>
+      <span class="ir">Ir a la sección →</span>
+    </a>
+  </div>
+  <p class="fuente" style="margin-top:auto">O sigue en orden: después del menú viene El problema.</p>
+  </div>
+</section>
+
+<!-- ═══ 4. EL PROBLEMA · problema central ═══ -->
+<section class="contenido" id="problema" data-background-color="#EEF4F3">
+  <div class="kicker"><span class="n">01</span> El problema</div>
+  <h2>El problema central</h2>
+  <div class="cuerpo">
+  <div class="dos" style="grid-template-columns:11fr 9fr;align-items:center;flex:1">
+    <div>
+      <img class="captura" src="assets/arbol-endopolis-final.png" alt="Árbol de problemas de la Clínica Endopolis, versión final del 3 de septiembre de 2026" data-amplia="assets/arbol-endopolis-final.png">
+      <p class="fuente">Árbol de problemas de Endopolis. Elaboración propia, versión final del 3 de septiembre de 2026. Clic para ampliar.</p>
+    </div>
+    <div>
+      <div class="tronco"><b>Tronco del árbol</b>La clínica administra sus citas y los datos de sus pacientes con procesos manuales y canales personales. La operación depende de la memoria y la disponibilidad de quien está en recepción, y septiembre mostró que también de su teléfono.</div>
+      <p style="font-size:.82em;margin-top:.9em">El árbol se leyó de abajo hacia arriba en la actividad 1.1: raíces, tronco y copa (Betancourt, 2016). En la siguiente diapositiva se recorre cadena por cadena.</p>
+    </div>
+  </div>
+  </div>
+</section>
+
+<!-- ═══ 5. EL PROBLEMA · seis cadenas ═══ -->
+<section class="contenido" data-background-color="#EEF4F3">
+  <div class="kicker"><span class="n">01</span> El problema</div>
+  <h2>Seis cadenas, de la causa a la consecuencia</h2>
+  <div class="cuerpo centrado">
+  <div class="tabs" data-tabs>
+    <button class="on" data-panel="c1">Teléfono y WhatsApp</button>
+    <button data-panel="c2">Libreta</button>
+    <button data-panel="c3">Sin aviso</button>
+    <button data-panel="c4">Sin historial</button>
+    <button data-panel="c5">Datos informales</button>
+    <button data-panel="c6">Sin registro</button>
+  </div>
+  <div class="panel on" id="c1"><div class="cadena-v">
+    <div class="pasos">
+      <div class="caja consecuencia"><b>Consecuencia · copa</b><p>Menos atención a quien ya está en el mostrador.</p></div>
+      <div class="flecha-arriba"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg></div>
+      <div class="caja efecto"><b>Efecto · rama</b><p>Recepción saturada: el tiempo se va en contestar y confirmar.</p></div>
+      <div class="flecha-arriba"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg></div>
+      <div class="caja causa"><b>Causa · raíz</b><p>Cada cita se aparta en una conversación, una a la vez y sólo en horario de recepción.</p></div>
+    </div>
+    <div class="nota-cadena"><span class="n">1<small>/6</small></span><b>Teléfono y WhatsApp</b><p>Se lee de abajo hacia arriba, como el árbol: la raíz explica la rama y la rama produce la copa.</p></div>
+  </div></div>
+  <div class="panel" id="c2"><div class="cadena-v">
+    <div class="pasos">
+      <div class="caja consecuencia"><b>Consecuencia · copa</b><p>Reprogramaciones en cadena y sala de espera saturada.</p></div>
+      <div class="flecha-arriba"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg></div>
+      <div class="caja efecto"><b>Efecto · rama</b><p>Empalmes, olvidos y esperas largas.</p></div>
+      <div class="flecha-arriba"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg></div>
+      <div class="caja causa"><b>Causa · raíz</b><p>La agenda del día vive escrita a mano en un cuaderno, copia única que se sobreescribe.</p></div>
+    </div>
+    <div class="nota-cadena"><span class="n">2<small>/6</small></span><b>Libreta</b><p>Se lee de abajo hacia arriba, como el árbol: la raíz explica la rama y la rama produce la copa.</p></div>
+  </div></div>
+  <div class="panel" id="c3"><div class="cadena-v">
+    <div class="pasos">
+      <div class="caja consecuencia"><b>Consecuencia · copa</b><p>Horas de consulta que no se recuperan.</p></div>
+      <div class="flecha-arriba"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg></div>
+      <div class="caja efecto"><b>Efecto · rama</b><p>Inasistencias y cancelaciones encima de la hora.</p></div>
+      <div class="flecha-arriba"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg></div>
+      <div class="caja causa"><b>Causa · raíz</b><p>Nada recuerda la cita, avisa un cambio ni empuja la consulta subsecuente.</p></div>
+    </div>
+    <div class="nota-cadena"><span class="n">3<small>/6</small></span><b>Sin aviso</b><p>Se lee de abajo hacia arriba, como el árbol: la raíz explica la rama y la rama produce la copa.</p></div>
+  </div></div>
+  <div class="panel" id="c4"><div class="cadena-v">
+    <div class="pasos">
+      <div class="caja consecuencia"><b>Consecuencia · copa</b><p>Estudios que se repiten, con costo y molestia. Conservar el expediente es obligatorio (Norma Oficial Mexicana NOM-004-SSA3-2012, 2012).</p></div>
+      <div class="flecha-arriba"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg></div>
+      <div class="caja efecto"><b>Efecto · rama</b><p>El médico decide sin ver lo que ya se hizo.</p></div>
+      <div class="flecha-arriba"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg></div>
+      <div class="caja causa"><b>Causa · raíz</b><p>Los estudios se los lleva el paciente y regresan sólo si los trae.</p></div>
+    </div>
+    <div class="nota-cadena"><span class="n">4<small>/6</small></span><b>Sin historial</b><p>Se lee de abajo hacia arriba, como el árbol: la raíz explica la rama y la rama produce la copa.</p></div>
+  </div></div>
+  <div class="panel" id="c5"><div class="cadena-v">
+    <div class="pasos">
+      <div class="caja consecuencia"><b>Consecuencia · copa</b><p>Riesgo legal y fuga de datos.</p></div>
+      <div class="flecha-arriba"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg></div>
+      <div class="caja efecto"><b>Efecto · rama</b><p>Exposición en privacidad y cumplimiento.</p></div>
+      <div class="flecha-arriba"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg></div>
+      <div class="caja causa"><b>Causa · raíz</b><p>Los datos del paciente llegan por mensaje o en hoja suelta, sin control de acceso.</p></div>
+    </div>
+    <div class="nota-cadena"><span class="n">5<small>/6</small></span><b>Datos informales</b><p>Se lee de abajo hacia arriba, como el árbol: la raíz explica la rama y la rama produce la copa.</p></div>
+  </div></div>
+  <div class="panel" id="c6"><div class="cadena-v">
+    <div class="pasos">
+      <div class="caja consecuencia"><b>Consecuencia · copa</b><p>Horarios y recursos acomodados por costumbre, no por demanda.</p></div>
+      <div class="flecha-arriba"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg></div>
+      <div class="caja efecto"><b>Efecto · rama</b><p>Decisiones operativas sin datos.</p></div>
+      <div class="flecha-arriba"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg></div>
+      <div class="caja causa"><b>Causa · raíz</b><p>Lo que se agenda, se mueve o se cancela no queda anotado en ningún lado.</p></div>
+    </div>
+    <div class="nota-cadena"><span class="n">6<small>/6</small></span><b>Sin registro</b><p>Se lee de abajo hacia arriba, como el árbol: la raíz explica la rama y la rama produce la copa.</p></div>
+  </div></div>
+  <div class="leyenda-arbol"><span class="l1">Raíz: causa directa</span><span class="l2">Rama: efecto directo</span><span class="l3">Copa: consecuencia de segundo nivel</span></div>
+  </div>
+</section>
+
+<!-- ═══ 6. EL PROBLEMA · lo que septiembre comprobó ═══ -->
+<section class="contenido" data-background-color="#EEF4F3">
+  <div class="kicker"><span class="n">01</span> El problema</div>
+  <h2>Lo que septiembre comprobó</h2>
+  <div class="cuerpo centrado">
+  <div class="dos" style="grid-template-columns:7fr 3fr;align-items:center">
+    <p>El árbol de agosto decía en abstracto que la operación depende de personas y no de un proceso. El 9 de septiembre lo dijo un puerto de carga.</p>
+    <div class="destacado"><span class="n">1</span>dispositivo físico era el punto único de falla de todo el negocio.</div>
+  </div>
+  <div class="evidencia">
+    <div class="ev fragment">
+      <svg viewBox="0 0 48 48" fill="none" stroke="#2E6E8F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="14" y="4" width="20" height="40" rx="4" fill="#E6EFF5"/><path d="M21 40h6"/><path d="M24 44v3M20 47h8" stroke="#C0654E"/><path d="M18 18l12 12M30 18L18 30" stroke="#C0654E"/></svg>
+      <b>El dispositivo</b>
+      <p>WhatsApp está anclado a un número y a un teléfono padre. Las versiones de escritorio y web dependen de ese teléfono. Si se rompe sin respaldo, el historial no se recupera. Ya había fallado antes: el almacenamiento se llenaba de tanta cita y la aplicación dejaba de funcionar.</p>
+    </div>
+    <div class="ev fragment">
+      <svg viewBox="0 0 48 48" fill="none" stroke="#3F8F88" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 10h32a4 4 0 0 1 4 4v16a4 4 0 0 1-4 4H20l-9 7v-7H8a4 4 0 0 1-4-4V14a4 4 0 0 1 4-4z" fill="#E4F1EC"/><path d="M14 18h20M14 24h14"/></svg>
+      <b>El canal</b>
+      <p>WhatsApp es un chat privado e informal. Los pacientes le tienen demasiada confianza: intentan resolver por ahí lo que requiere consulta y mandan estudios y resultados por el chat.</p>
+    </div>
+    <div class="ev fragment">
+      <svg viewBox="0 0 48 48" fill="none" stroke="#12384A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M24 4l16 6v12c0 10-7 18-16 22C15 40 8 32 8 22V10z" fill="#E6EFF5"/><path d="M24 18v8M24 30v1" stroke="#C0654E"/></svg>
+      <b>Los datos</b>
+      <p>Lo que viaja por ese chat es información de salud, dato personal sensible bajo la ley mexicana (Ley Federal de Protección de Datos Personales en Posesión de los Particulares, 2025). Es la rama de exposición legal del árbol, ocurriendo en vivo.</p>
+    </div>
+  </div>
+  </div>
+</section>
+
+<!-- ═══ 7. LA PROPUESTA · qué hace el sistema ═══ -->
+<section class="contenido" id="propuesta" data-background-color="#EEF4F3">
+  <div class="kicker"><span class="n">02</span> La propuesta</div>
+  <h2>La información deja de vivir en un teléfono</h2>
+  <div class="cuerpo">
+  <div class="split">
+    <div>
+      <p>Un sistema de citas que se gestiona desde cualquier navegador, con usuario y contraseña, y con toda la información en una base de datos. Recepción lo usa desde la computadora del consultorio; el paciente, desde una aplicación web sencilla en su celular, sin instalar nada.</p>
+      <p>WhatsApp se queda sólo como canal de aviso: por ahí llega el enlace que abre la aplicación. Al paciente se le dirige del chat a un medio formal; no se le atiende dentro del chat.</p>
+    </div>
+    <svg class="diagrama" viewBox="0 0 600 470" aria-label="Diagrama: consultorio y paciente conectados a una base de datos separada; WhatsApp sólo manda el enlace al paciente">
+      <defs>
+        <linearGradient id="gdb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2E6E8F"/><stop offset="1" stop-color="#3F8F88"/></linearGradient>
+        <filter id="sombra" x="-10%" y="-10%" width="120%" height="130%"><feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#12384A" flood-opacity=".14"/></filter>
+      </defs>
+      <!-- consultorio -->
+      <g filter="url(#sombra)"><rect x="20" y="30" width="250" height="96" rx="14" fill="#fff" stroke="#D6E2E0"/></g>
+      <g transform="translate(40,52)" fill="none" stroke="#2E6E8F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="0" y="4" width="44" height="30" rx="4" fill="#E6EFF5"/><path d="M0 12h44M14 42h16M22 34v8"/></g>
+      <text x="100" y="66" font-family="Montserrat, sans-serif" font-size="17" font-weight="600" fill="#12384A">Consultorio</text>
+      <text x="100" y="90" font-family="Source Sans 3, sans-serif" font-size="14" fill="#5F7480">navegador, usuario y contraseña</text>
+      <!-- paciente -->
+      <g filter="url(#sombra)"><rect x="330" y="30" width="250" height="96" rx="14" fill="#fff" stroke="#D6E2E0"/></g>
+      <g transform="translate(352,50)" fill="none" stroke="#3F8F88" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="0" width="26" height="48" rx="5" fill="#E4F1EC"/><path d="M17 42h8"/></g>
+      <text x="410" y="66" font-family="Montserrat, sans-serif" font-size="17" font-weight="600" fill="#12384A">Paciente</text>
+      <text x="410" y="90" font-family="Source Sans 3, sans-serif" font-size="14" fill="#5F7480">aplicación web en su celular</text>
+      <!-- base de datos -->
+      <g filter="url(#sombra)"><rect x="120" y="220" width="370" height="100" rx="14" fill="url(#gdb)"/></g>
+      <g transform="translate(144,244)" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><ellipse cx="22" cy="8" rx="20" ry="7" fill="rgba(255,255,255,.18)"/><path d="M2 8v32c0 4 9 7 20 7s20-3 20-7V8"/><path d="M2 24c0 4 9 7 20 7s20-3 20-7"/></g>
+      <text x="204" y="262" font-family="Montserrat, sans-serif" font-size="17" font-weight="600" fill="#fff">Base de datos separada</text>
+      <text x="204" y="288" font-family="Source Sans 3, sans-serif" font-size="13.5" fill="#DDEBE5">toda la información, con acceso controlado</text>
+      <!-- conexiones -->
+      <path d="M145 126v44h95v50" fill="none" stroke="#2E6E8F" stroke-width="2.4"/><polygon points="240,220 234,208 246,208" fill="#2E6E8F"/>
+      <path d="M455 126v44h-95v50" fill="none" stroke="#3F8F88" stroke-width="2.4"/><polygon points="360,220 354,208 366,208" fill="#3F8F88"/>
+      <!-- whatsapp: aparece al clic -->
+      <g class="fragment">
+        <rect x="330" y="372" width="250" height="84" rx="14" fill="#fff" stroke="#7FB8AE" stroke-width="1.6" stroke-dasharray="7 5"/>
+        <g transform="translate(352,392)" fill="none" stroke="#3F8F88" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h28a5 5 0 0 1 5 5v16a5 5 0 0 1-5 5H16l-8 7v-7H6a5 5 0 0 1-5-5V9a5 5 0 0 1 5-5z" fill="#E4F1EC"/><path d="M10 13h20M10 20h12"/></g>
+        <text x="410" y="405" font-family="Montserrat, sans-serif" font-size="17" font-weight="600" fill="#12384A">WhatsApp</text>
+        <text x="410" y="429" font-family="Source Sans 3, sans-serif" font-size="14" fill="#5F7480">sólo manda el enlace</text>
+        <path d="M548 372V150" fill="none" stroke="#3F8F88" stroke-width="2.2" stroke-dasharray="7 6"/><polygon points="548,130 541,150 555,150" fill="#3F8F88"/>
+        <text x="538" y="352" text-anchor="end" font-family="Source Sans 3, sans-serif" font-size="13" fill="#3F8F88">aviso con el enlace</text>
+      </g>
+    </svg>
+  </div>
+  </div>
+</section>
+
+<!-- ═══ 8. LA PROPUESTA · qué resuelve cada parte ═══ -->
+<section class="contenido" data-background-color="#EEF4F3">
+  <div class="kicker"><span class="n">02</span> La propuesta</div>
+  <h2>Qué resuelve cada parte</h2>
+  <div class="cuerpo centrado">
+  <div class="tabs" data-tabs>
+    <button class="on" data-panel="p-agenda">Agenda</button>
+    <button data-panel="p-paciente">Paciente</button>
+    <button data-panel="p-avisos">Avisos</button>
+    <button data-panel="p-datos">Datos</button>
+  </div>
+  <div class="panel on" id="p-agenda"><div class="parte">
+    <svg viewBox="0 0 64 64" fill="none" stroke="#2E6E8F" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="12" width="48" height="44" rx="6" fill="#E6EFF5"/><path d="M8 24h48M20 6v12M44 6v12"/><rect x="16" y="32" width="8" height="8" rx="2" fill="#2E6E8F" stroke="none"/><rect x="28" y="32" width="8" height="8" rx="2" fill="#7FB8AE" stroke="none"/><rect x="40" y="32" width="8" height="8" rx="2" fill="#7FB8AE" stroke="none"/><rect x="16" y="44" width="8" height="6" rx="2" fill="#7FB8AE" stroke="none"/></svg>
+    <div><p>Una sola agenda, consultable desde cualquier equipo con acceso. Los horarios libres los ve quien agenda, no sólo quien tiene la libreta enfrente. Cada cita, cambio y cancelación queda registrada con fecha.</p><span class="chip">Responde a las cadenas 1, 2 y 6 del árbol</span></div>
+  </div></div>
+  <div class="panel" id="p-paciente"><div class="parte">
+    <svg viewBox="0 0 64 64" fill="none" stroke="#3F8F88" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="18" y="4" width="28" height="56" rx="6" fill="#E4F1EC"/><path d="M28 52h8"/><circle cx="32" cy="24" r="6"/><path d="M22 42c2-6 6-8 10-8s8 2 10 8"/></svg>
+    <div><p>El paciente agenda, confirma o mueve su cita desde su celular, a cualquier hora, dentro de los horarios que la clínica define. Ve su próxima cita y su historial.</p><span class="chip">Responde a la causa "sin canal fuera de horario"</span></div>
+  </div></div>
+  <div class="panel" id="p-avisos"><div class="parte">
+    <svg viewBox="0 0 64 64" fill="none" stroke="#12384A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M16 44V28a16 16 0 0 1 32 0v16l6 6H10z" fill="#E6EFF5"/><path d="M26 54a6 6 0 0 0 12 0"/><circle cx="48" cy="14" r="6" fill="#3F8F88" stroke="none"/></svg>
+    <div><p>Recordatorio antes de la cita y aviso cuando la agenda cambia, por correo o SMS, con el enlace a la aplicación. WhatsApp deja de ser el lugar donde se atiende.</p><span class="chip">Responde a la cadena 3</span></div>
+  </div></div>
+  <div class="panel" id="p-datos"><div class="parte">
+    <svg viewBox="0 0 64 64" fill="none" stroke="#2E6E8F" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M32 4l22 8v16c0 14-9 25-22 32C19 53 10 42 10 28V12z" fill="#E6EFF5"/><rect x="24" y="28" width="16" height="14" rx="3" fill="#fff"/><path d="M27 28v-4a5 5 0 0 1 10 0v4"/></svg>
+    <div><p>Los datos del paciente se capturan una vez, en un formulario, y quedan en la base con control de acceso por usuario. Nada de estudios por chat. El expediente clínico completo es una etapa posterior; aquí se resuelve dónde y cómo se guarda lo que hoy viaja por mensaje.</p><span class="chip">Responde a las cadenas 4 y 5</span></div>
+  </div></div>
+  </div>
+</section>
+
+<!-- ═══ 9. LA PROPUESTA · de dónde parte ═══ -->
+<section class="contenido" data-background-color="#EEF4F3">
+  <div class="kicker"><span class="n">02</span> La propuesta</div>
+  <h2>De dónde parte</h2>
+  <div class="cuerpo centrado">
+  <p style="font-size:.86em">En noviembre de 2025 construí un prototipo de este sistema con Next.js, Prisma y PostgreSQL: página pública, registro, formulario de agendado, portal del paciente y panel de administración. La interfaz existe y se navega; la capa de datos nunca quedó operativa y el sistema no llegó a usarse en la clínica. La propuesta retoma ese prototipo, le pone la base de datos que le faltó y le agrega los avisos y el acceso del paciente.</p>
+  <div class="capturas-dos">
+    <div class="figura"><span class="tag">Inicio</span><img class="captura" src="assets/endopolis-inicio.png" alt="Página de inicio del prototipo de Endopolis" data-amplia="assets/endopolis-inicio.png"></div>
+    <div class="figura"><span class="tag">Agendar</span><img class="captura" src="assets/endopolis-agendar.png" alt="Formulario de agendado del prototipo de Endopolis" data-amplia="assets/endopolis-agendar.png"></div>
+  </div>
+  <p class="fuente">Capturas reales de endopolis.vercel.app, tomadas el 12 de septiembre de 2026. Prototipo de 2025, sin base de datos en operación. Clic para ampliar.</p>
+  </div>
+</section>
+
+<!-- ═══ 10. EL ROI · qué mide ═══ -->
+<section class="contenido" id="roi" data-background-color="#EEF4F3">
+  <div class="kicker"><span class="n">03</span> El ROI</div>
+  <h2>Qué mide el ROI</h2>
+  <div class="cuerpo centrado">
+  <p style="font-size:.86em">El retorno de inversión compara lo que un proyecto devuelve con lo que costó. Se calcula restando la inversión a la ganancia, dividiendo entre la inversión y multiplicando por cien (Vaz, 2022). En video: ingresos menos costos, entre costos, por cien (Cyberclick Marketing Digital, 2022, 0:29).</p>
+  <div class="formula" aria-label="ROI = (ganancia - inversión) / inversión × 100">
+    <span class="res">ROI</span><span class="op">=</span>
+    <span class="frac"><span class="arriba"><span class="t g">ganancia</span><span class="op">−</span><span class="t i">inversión</span></span><span class="raya"></span><span class="t i">inversión</span></span>
+    <span class="op">×</span><span class="t">100</span>
+  </div>
+  <p class="fragment" style="font-size:.86em">Un ROI de 100% significa que la inversión se recuperó completa; cero, que no hubo ganancia ni pérdida; negativo, que todavía no se recupera lo invertido (Pursell, 2025). Para Endopolis la ganancia es el dinero que hoy se pierde y el sistema recuperaría; la inversión es lo que cuesta construirlo y operarlo un año.</p>
+  </div>
+</section>
+
+<!-- ═══ 11. EL ROI · los números ═══ -->
+<section class="contenido" data-background-color="#EEF4F3">
+  <div class="kicker"><span class="n">03</span> El ROI</div>
+  <h2>Los números, con su origen</h2>
+  <div class="cuerpo centrado">
+  <div class="tabs" data-tabs>
+    <button class="on" data-panel="n-sin">Sin el proyecto</button>
+    <button data-panel="n-con">Con el proyecto</button>
+    <button data-panel="n-inv">Inversión</button>
+  </div>
+  <div class="panel on" id="n-sin">
+    <table>
+      <thead><tr><th style="width:34%">Concepto</th><th style="width:30%">Cifra</th><th style="width:36%">Origen</th></tr></thead>
+      <tbody>
+        <tr><td>Citas atendidas</td><td>5 por semana, 260 al año</td><td><span class="chip dato">Dato</span><br>Piso conservador: al menos una al día de lunes a viernes.</td></tr>
+        <tr><td>Citas que se pierden por inasistencia, empalme o cancelación tardía</td><td>15%, 39 al año</td><td><span class="chip supuesto">Supuesto</span><br>Declarado; rango de 10 a 15%.</td></tr>
+        <tr><td>Valor de cada cita perdida</td><td>$800 si es consulta, $3,500 si es endoscopia</td><td><span class="chip dato">Dato</span><br>Precios cargados en el prototipo.</td></tr>
+        <tr><td>Un incidente como el de septiembre</td><td>3 citas no atendidas en tres días</td><td><span class="chip supuesto">Supuesto</span><br>Caso más inocuo; se supone uno al año.</td></tr>
+        <tr><td>Tiempo de recepción en agendar a mano</td><td>3 horas diarias, 780 al año</td><td><span class="chip dato">Dato</span><br>Tiempo familiar, no sueldo: no se convierte a pesos.</td></tr>
+      </tbody>
+    </table>
+    <p class="final-linea">Se pierde al año: $33,600 si todo son consultas · $147,000 si son procedimientos</p>
+  </div>
+  <div class="panel" id="n-con">
+    <table>
+      <thead><tr><th style="width:34%">Concepto</th><th style="width:30%">Cifra</th><th style="width:36%">Origen</th></tr></thead>
+      <tbody>
+        <tr><td>Citas perdidas que el sistema recupera</td><td>La mitad, con recordatorio y agenda consultable</td><td><span class="chip supuesto">Supuesto</span><br>Declarado.</td></tr>
+        <tr><td>Incidentes por teléfono</td><td>Ninguno: la agenda ya no vive en un dispositivo</td><td><span class="chip dato">Consecuencia</span><br>Directa de la propuesta.</td></tr>
+        <tr><td>Horas de recepción</td><td>Siguen sin contarse en pesos</td><td>El ROI no las necesita para calcularse.</td></tr>
+      </tbody>
+    </table>
+    <p class="final-linea">Se recupera al año: $18,000 en escala consulta · $78,750 en escala procedimiento</p>
+  </div>
+  <div class="panel" id="n-inv">
+    <table>
+      <thead><tr><th style="width:22%">Concepto</th><th style="width:44%">Cifra</th><th style="width:34%">Origen</th></tr></thead>
+      <tbody>
+        <tr><td>Desarrollo</td><td>60 horas (10 semanas × 6 h, del 14 de septiembre al 22 de noviembre) × $124.62 = $7,477.20</td><td>Tarifa: $16,000 mensuales entre 173.33 horas por 1.35.</td></tr>
+        <tr><td>Reserva del 10%</td><td>$747.72</td><td>Mismo criterio.</td></tr>
+        <tr><td>Infraestructura 12 meses</td><td>Vercel Pro 20 USD + Supabase Pro 25 USD al mes + dominio, a 16.8748 pesos por dólar = $9,303.58</td><td>Precios del 6 de septiembre de 2026 (Banco de México, 2026; Porkbun, s. f.; Supabase, s. f.; Vercel, s. f.).</td></tr>
+        <tr><td>Mantenimiento</td><td>4 horas al mes × 12 = $5,981.76</td><td>Mismo criterio de tarifa.</td></tr>
+        <tr><td>Avisos por correo o SMS</td><td>$100 al mes = $1,200.00</td><td><span class="chip supuesto">Supuesto</span><br>Por validar.</td></tr>
+      </tbody>
+    </table>
+    <p class="final-linea">Inversión del primer año: $24,710.26 · Operación anual desde el segundo año: $16,687.67</p>
+  </div>
+  </div>
+</section>
+
+<!-- ═══ 12. EL ROI · el resultado ═══ -->
+<section class="contenido" data-background-color="#EEF4F3">
+  <div class="kicker"><span class="n">03</span> El ROI</div>
+  <h2>El resultado, en dos escalas</h2>
+  <div class="cuerpo">
+  <div class="roi-grid">
+    <div class="grafica">
+      <svg viewBox="0 0 720 440" role="img" aria-label="Gráfica de barras: pérdida sin el proyecto, recuperación con el proyecto e inversión, en dos escalas">
+        <line x1="60" y1="60" x2="700" y2="60" stroke="#D6E2E0"/><line x1="60" y1="160" x2="700" y2="160" stroke="#D6E2E0"/><line x1="60" y1="260" x2="700" y2="260" stroke="#D6E2E0"/><line x1="60" y1="360" x2="700" y2="360" stroke="#9FB3B0" stroke-width="1.6"/>
+        <text x="48" y="64" text-anchor="end" font-family="Source Sans 3, sans-serif" font-size="12" fill="#5F7480">150k</text>
+        <text x="48" y="164" text-anchor="end" font-family="Source Sans 3, sans-serif" font-size="12" fill="#5F7480">100k</text>
+        <text x="48" y="264" text-anchor="end" font-family="Source Sans 3, sans-serif" font-size="12" fill="#5F7480">50k</text>
+        <text x="48" y="364" text-anchor="end" font-family="Source Sans 3, sans-serif" font-size="12" fill="#5F7480">0</text>
+        <rect class="barra" x="110" y="292.8" width="40" height="67.2" rx="4" fill="#C0654E"/>
+        <rect class="barra" x="162" y="324" width="40" height="36" rx="4" fill="#2F8F7A" style="transition-delay:.1s"/>
+        <rect class="barra" x="214" y="310.6" width="40" height="49.4" rx="4" fill="#12384A" style="transition-delay:.2s"/>
+        <rect class="barra" x="430" y="66" width="40" height="294" rx="4" fill="#C0654E"/>
+        <rect class="barra" x="482" y="202.5" width="40" height="157.5" rx="4" fill="#2F8F7A" style="transition-delay:.1s"/>
+        <rect class="barra" x="534" y="310.6" width="40" height="49.4" rx="4" fill="#12384A" style="transition-delay:.2s"/>
+        <text class="etiqueta-barra" x="130" y="284" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="13" font-weight="600" fill="#C0654E">$33,600</text>
+        <text class="etiqueta-barra" x="182" y="316" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="13" font-weight="600" fill="#2F8F7A">$18,000</text>
+        <text class="etiqueta-barra" x="234" y="302" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="13" font-weight="600" fill="#12384A">$24,710</text>
+        <text class="etiqueta-barra" x="450" y="57" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="13" font-weight="600" fill="#C0654E">$147,000</text>
+        <text class="etiqueta-barra" x="502" y="194" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="13" font-weight="600" fill="#2F8F7A">$78,750</text>
+        <text class="etiqueta-barra" x="554" y="302" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="13" font-weight="600" fill="#12384A">$24,710</text>
+        <text x="182" y="388" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="14" font-weight="600" fill="#12384A">Escala consulta</text>
+        <text x="502" y="388" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="14" font-weight="600" fill="#12384A">Escala procedimiento</text>
+        <rect x="70" y="416" width="12" height="12" rx="3" fill="#C0654E"/><text x="88" y="427" font-family="Source Sans 3, sans-serif" font-size="12.5" fill="#1A3340">Se pierde sin el proyecto</text>
+        <rect x="290" y="416" width="12" height="12" rx="3" fill="#2F8F7A"/><text x="308" y="427" font-family="Source Sans 3, sans-serif" font-size="12.5" fill="#1A3340">Se recupera con el proyecto</text>
+        <rect x="520" y="416" width="12" height="12" rx="3" fill="#12384A"/><text x="538" y="427" font-family="Source Sans 3, sans-serif" font-size="12.5" fill="#1A3340">Inversión del primer año</text>
+      </svg>
+    </div>
+    <div>
+      <div class="cifra-roi negativa"><span class="valor">-27.2%</span><p>ROI del primer año si todo lo que se pierde son consultas; la inversión se recupera en 16.5 meses.</p></div>
+      <div class="cifra-roi positiva"><span class="valor">+218.7%</span><p>ROI del primer año si lo que se pierde son procedimientos; se recupera en 3.8 meses.</p></div>
+      <p class="nota-roi fragment">Con el piso de una cita al día y sólo consultas, el proyecto no se paga el primer año y después apenas cubre su operación. Se paga en cuanto entre lo que se recupera hay procedimientos: bastan 8 endoscopias al año, o 31 consultas. Lo más barato de comprar resultó lo más caro de operar; el incidente de septiembre costó al menos $2,400 en tres días, y pudo ser diez veces más.</p>
+    </div>
+  </div>
+  </div>
+</section>
+
+<!-- ═══ 13. EL ROI · calculadora ═══ -->
+<section class="contenido" data-background-color="#EEF4F3">
+  <div class="kicker"><span class="n">03</span> El ROI</div>
+  <h2>Cámbiale los números</h2>
+  <div class="cuerpo centrado">
+  <p style="font-size:.84em">Los supuestos de arriba son los más bajos. Mueve las citas por semana, el porcentaje que se pierde y qué es lo que se pierde, y mira qué pasa con el retorno. La inversión no cambia: $24,710.26 el primer año.</p>
+  <form class="calc" id="calc-roi">
+    <div class="controles">
+      <div>
+        <label for="citas">Citas por semana: <output id="citas-out">5</output></label>
+        <input type="range" id="citas" name="citas" min="1" max="30" value="5" step="1">
+      </div>
+      <fieldset>
+        <legend>Se pierde</legend>
+        <label class="radio"><input type="radio" name="perdida" value="10"> 10%</label>
+        <label class="radio"><input type="radio" name="perdida" value="15" checked> 15%</label>
+        <label class="radio"><input type="radio" name="perdida" value="20"> 20%</label>
+      </fieldset>
+      <fieldset>
+        <legend>Lo que se pierde es</legend>
+        <label class="radio"><input type="radio" name="tipo" value="800" checked> Consultas $800</label>
+        <label class="radio"><input type="radio" name="tipo" value="3500"> Procedimientos $3,500</label>
+      </fieldset>
+      <fieldset>
+        <legend>Incidentes como el de septiembre al año</legend>
+        <label class="radio"><input type="radio" name="incidentes" value="0"> 0</label>
+        <label class="radio"><input type="radio" name="incidentes" value="1" checked> 1</label>
+      </fieldset>
+    </div>
+    <div class="salida">
+      <p>Sin el proyecto se pierden al año <b id="res-sin">$33,600</b></p>
+      <p>Con el proyecto se recuperan <b id="res-con">$18,000</b></p>
+      <p>ROI del primer año <b class="negativo" id="res-roi">-27.2%</b></p>
+      <p>La inversión se recupera en <b id="res-meses">16.5 meses</b></p>
+    </div>
+  </form>
+  </div>
+</section>
+
+<!-- ═══ 14. CONCLUSIÓN ═══ -->
+<section class="oscuro" data-background-gradient="linear-gradient(135deg,#0B2733 0%,#12384A 55%,#1B4A5C 100%)" style="display:flex;flex-direction:column;justify-content:center;padding-top:40px;padding-bottom:40px">
+  <svg class="torres" viewBox="0 0 640 720" preserveAspectRatio="xMaxYMax slice" aria-hidden="true">
+    <polygon points="90,720 90,420 150,380 150,720" fill="url(#d2)"/>
+    <polygon points="170,720 170,300 240,250 240,720" fill="url(#d1)"/>
+    <polygon points="260,720 260,190 330,130 330,720" fill="url(#d3)"/>
+    <polygon points="350,720 350,120 420,80 420,720" fill="url(#d1)"/>
+    <polygon points="440,720 440,220 510,170 510,720" fill="url(#d2)"/>
+    <polygon points="530,720 530,330 600,290 600,720" fill="url(#d3)"/>
+  </svg>
+  <div class="kicker" style="color:#7FB8AE">Cierre</div>
+  <h2>Dónde vive la información</h2>
+  <p style="max-width:26em;font-size:.9em">El árbol de agosto decía que la operación de Endopolis dependía de personas. Septiembre agregó un detalle: dependía de un teléfono que costó poco y que, al fallar de un puerto de carga, dejó tres días de agenda sin atender. Cambiar el chip devolvió la línea; no devolvió la agenda, porque la agenda no estaba en la línea. La propuesta mueve esa información a un lugar que no se rompe con un cable: una base de datos a la que entran recepción y paciente desde su navegador, y de la que WhatsApp sólo avisa. Con los números más bajos que pude declarar, el sistema se paga en el momento en que evita perder ocho procedimientos al año. En tres días de septiembre ya empezó a contarlos.</p>
+</section>
+
+<!-- ═══ 15. REFERENCIAS ═══ -->
+<section class="contenido" data-background-color="#EEF4F3">
+  <div class="kicker">Fuentes</div>
+  <h2>Referencias</h2>
+  <div class="cuerpo">
+  <p class="ref">Banco de México. (2026). <i>Portal del mercado cambiario: tipo de cambio FIX</i>. https://www.banxico.org.mx/tipcamb/main.do?page=tip&amp;idioma=sp</p>
+  <p class="ref">Betancourt, D. F. (2016). Cómo hacer un árbol de problemas: Ejemplo práctico. <i>Ingenio Empresa</i>. https://www.ingenioempresa.com/arbol-de-problemas/</p>
+  <p class="ref">Cyberclick Marketing Digital. (2022, 30 de agosto). <i>¿Qué es el ROI + ROAS y cómo calcularlo? | Métrica CLAVE</i> [Video]. YouTube. https://www.youtube.com/watch?v=TehNkKmhTk0</p>
+  <p class="ref">Ley Federal de Protección de Datos Personales en Posesión de los Particulares. (2025, 20 de marzo). <i>Diario Oficial de la Federación</i>. https://www.diputados.gob.mx/LeyesBiblio/pdf/LFPDPPP.pdf</p>
+  <p class="ref">Nediger, M. (2018, 28 de agosto). Guía de cómo hacer una presentación: Resume tu información. <i>Venngage</i>. https://es.venngage.com/blog/como-hacer-una-presentacion/</p>
+  <p class="ref">Norma Oficial Mexicana NOM-004-SSA3-2012, Del expediente clínico. (2012, 15 de octubre). <i>Diario Oficial de la Federación</i>. https://dof.gob.mx/nota_detalle.php?codigo=5272787&amp;fecha=15/10/2012</p>
+  <p class="ref">Porkbun. (s. f.). <i>.COM.MX domain names</i>. https://porkbun.com/tld/com.mx</p>
+  <p class="ref">Pursell, S. (2025, 28 de enero). Cómo medir el ROI en el marketing (+ formula y ejemplos). <i>HubSpot</i>. https://blog.hubspot.es/marketing/que-es-roi</p>
+  <p class="ref">Supabase. (s. f.). <i>Pricing &amp; fees</i>. https://supabase.com/pricing</p>
+  <p class="ref">Vaz, R. (2022, 1 de noviembre). ¿Qué es el ROI y cómo se calcula? <i>Docusign</i>. https://www.docusign.mx/blog/que-es-roi</p>
+  <p class="ref">Vercel. (s. f.). <i>Vercel pricing</i>. https://vercel.com/pricing</p>
+  </div>
+</section>
+
+</div></div>
+
+<div class="zoom" id="zoom"><img id="zoom-img" src="" alt="Vista ampliada"></div>
+<div class="pie"><a href="#/menu">Menú</a><span>← → para moverte · Esc para ver todo</span></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.js"></script>
+<script>
+// teléfono en vertical: lienzo vertical y una sola columna; en cualquier otro caso, 16:9
+const vertical=window.innerWidth<700&&window.innerHeight>window.innerWidth;
+document.documentElement.classList.toggle('vertical',vertical);
+Reveal.initialize({
+  hash:true, slideNumber:'c/t', progress:true, controls:true, controlsTutorial:false,
+  transition:'fade', width:vertical?720:1280, height:vertical?1280:720, margin:0.03, center:false, touch:true, fragments:true,
+  scrollActivationWidth:0, // reveal 5 cambia a vista de scroll bajo 435 px; aquí manda el modo vertical propio
+});
+// pestañas
+document.querySelectorAll('[data-tabs]').forEach(tabs=>{
+  tabs.addEventListener('click',e=>{
+    const b=e.target.closest('button[data-panel]'); if(!b) return;
+    tabs.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));
+    const sec=tabs.closest('section');
+    sec.querySelectorAll('.panel').forEach(p=>p.classList.toggle('on',p.id===b.dataset.panel));
+  });
+});
+// ampliar imágenes a pantalla completa
+const zoom=document.getElementById('zoom');
+const zoomImg=document.getElementById('zoom-img');
+document.querySelectorAll('[data-amplia]').forEach(el=>{
+  el.addEventListener('click',e=>{e.preventDefault();zoomImg.src=el.dataset.amplia;zoom.classList.add('on');});
+});
+zoom.addEventListener('click',()=>zoom.classList.remove('on'));
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'&&zoom.classList.contains('on')){e.stopPropagation();e.preventDefault();zoom.classList.remove('on');}
+},true);
+// calculadora del ROI
+(function(){
+  const inv=24710.26;
+  const money=n=>'$'+Math.round(n).toLocaleString('es-MX');
+  const form=document.getElementById('calc-roi'); if(!form) return;
+  function calcula(){
+    const citas=+document.getElementById('citas').value;
+    document.getElementById('citas-out').textContent=citas;
+    const perdida=+form.querySelector('input[name=perdida]:checked').value;
+    const precio=+form.querySelector('input[name=tipo]:checked').value;
+    const incidentes=+form.querySelector('input[name=incidentes]:checked').value;
+    const perdidas=citas*52*perdida/100;
+    const sin=perdidas*precio+incidentes*3*precio;
+    const con=perdidas/2*precio+incidentes*3*precio;
+    const roi=(con-inv)/inv*100;
+    const meses=con>0?inv/(con/12):null;
+    document.getElementById('res-sin').textContent=money(sin);
+    document.getElementById('res-con').textContent=money(con);
+    const elRoi=document.getElementById('res-roi');
+    elRoi.textContent=roi.toFixed(1)+'%'; elRoi.className=roi<0?'negativo':'positivo';
+    document.getElementById('res-meses').textContent=meses===null?'nunca':meses.toFixed(1)+' meses';
+  }
+  form.addEventListener('input',calcula); form.addEventListener('change',calcula); calcula();
+})();
+</script>
+</body>
+</html>
